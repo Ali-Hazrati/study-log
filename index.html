@@ -273,11 +273,56 @@ td.act{width:1%;text-align:left}
 footer{text-align:center;color:var(--ink-3);font-size:.78rem;padding-top:4px;line-height:1.9}
 .credit{display:inline-block;margin-top:2px;color:var(--ink-2);font-weight:600;letter-spacing:.2px}
 
+/* ---------- تب‌ها ---------- */
+.tabs{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;padding:5px;box-shadow:var(--shadow)}
+.tab{flex:1;padding:9px 12px;border:0;border-radius:8px;background:transparent;cursor:pointer;
+  font:inherit;font-size:.87rem;font-weight:700;color:var(--ink-2);transition:.14s}
+.tab:hover{color:var(--accent);background:var(--accent-soft)}
+.tab[aria-selected=true]{background:var(--accent);color:#fff}
+
+/* ---------- برنامهٔ هفتگی ---------- */
+.plan-day{border:1px solid var(--line-2);border-radius:10px;background:var(--surface-2);
+  padding:11px 13px;display:flex;flex-direction:column;gap:9px}
+.plan-days{display:flex;flex-direction:column;gap:10px}
+.pd-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pd-name{font-weight:800;font-size:.92rem;min-width:64px}
+.pd-meta{font-size:.78rem;color:var(--ink-3);font-variant-numeric:tabular-nums;margin-inline-start:auto}
+.slot-row{display:grid;grid-template-columns:1fr 1fr 1.6fr auto;gap:7px;align-items:center}
+.slot-row input{padding:7px 9px;font-size:.84rem}
+.slot-row .bad{border-color:var(--danger)}
+.pd-empty{font-size:.8rem;color:var(--ink-3)}
+.x-btn{border:1px solid var(--line);background:var(--surface);color:var(--ink-3);cursor:pointer;
+  border-radius:8px;width:30px;height:30px;font-size:1rem;line-height:1;transition:.14s}
+.x-btn:hover{color:var(--danger);border-color:var(--danger)}
+.mini{padding:5px 10px;font-size:.78rem;border-radius:7px}
+
+table.sched{width:100%;border-collapse:collapse;table-layout:fixed}
+table.sched th{width:88px;text-align:right;padding:9px 11px;font-size:.85rem;font-weight:800;
+  border:1px solid var(--line);background:var(--surface-2);white-space:nowrap;vertical-align:middle}
+table.sched td{border:1px solid var(--line);padding:8px;vertical-align:middle}
+.slots{display:flex;flex-wrap:wrap;gap:7px}
+.slot{display:flex;flex-direction:column;gap:1px;border:1px solid var(--line-2);border-radius:8px;
+  padding:6px 10px;background:var(--surface-2);min-width:96px}
+.slot b{font-size:.83rem;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.2px}
+.slot i{font-size:.76rem;font-style:normal;color:var(--ink-2)}
+.slot.off{opacity:.55}
+.no-slot{font-size:.8rem;color:var(--ink-3)}
+
+@media (max-width:560px){
+  .slot-row{grid-template-columns:1fr 1fr auto}
+  .slot-row .s-label{grid-column:1/-1}
+  table.sched th{width:64px;padding:7px;font-size:.8rem}
+}
+
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media print{
   body{background:#fff}
   .card,.masthead{box-shadow:none;break-inside:avoid}
   .no-print,form,.chips,.icon-btn{display:none!important}
+  table.sched{break-inside:avoid}
+  table.sched th,table.sched td,.slot{border-color:#c8ced6!important}
+  .slot{background:#fff!important}
 }
 </style>
 </head>
@@ -302,6 +347,13 @@ footer{text-align:center;color:var(--ink-3);font-size:.78rem;padding-top:4px;lin
       <span class="val" id="todayVal">—</span>
     </div>
   </header>
+
+  <nav class="tabs no-print" role="tablist">
+    <button class="tab" id="tabLog" role="tab" aria-selected="true" aria-controls="viewLog">دفتر مطالعه</button>
+    <button class="tab" id="tabPlan" role="tab" aria-selected="false" aria-controls="viewPlan">برنامهٔ هفتگی</button>
+  </nav>
+
+  <div id="viewLog" role="tabpanel">
 
   <!-- ثبت جلسه -->
   <section class="card no-print">
@@ -487,6 +539,36 @@ footer{text-align:center;color:var(--ink-3);font-size:.78rem;padding-top:4px;lin
 
     </div>
   </section>
+
+  </div><!-- /viewLog -->
+
+  <div id="viewPlan" role="tabpanel" hidden>
+
+    <section class="card no-print">
+      <h2>ساخت برنامهٔ هفتگی</h2>
+      <p class="hint" style="margin-bottom:2px">برای هر روز هر تعداد بازه که خواستی اضافه کن، ساعت شروع و پایان را بگذار و در صورت دلخواه اسم درس را بنویس. هفته از شنبه شروع می‌شود.</p>
+      <!-- همان فهرست دروسِ دفتر مطالعه؛ تایپ آزاد هم ممکن است -->
+      <datalist id="subjectList"></datalist>
+      <div class="plan-days" id="planDays"></div>
+      <div class="btn-row" style="margin-top:14px">
+        <button type="button" class="btn ghost" id="btnPlanCopyPrev">تکرار روز قبل در روز خالی بعدی</button>
+        <button type="button" class="btn ghost" id="btnPlanClear" style="color:var(--danger);border-color:var(--danger)">پاک کردن کل برنامه</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="head-row">
+        <h2>برنامهٔ نهایی</h2>
+        <span class="d-meta" id="planMeta"></span>
+      </div>
+      <div class="table-wrap" id="planPreview"></div>
+      <div class="btn-row no-print" style="margin-top:14px">
+        <button type="button" class="btn" id="btnPlanPdf">گرفتن خروجی PDF</button>
+      </div>
+      <p class="hint no-print">در پنجرهٔ چاپ، مقصد را روی «Save as PDF» بگذار تا فایل PDF ذخیره شود.</p>
+    </section>
+
+  </div><!-- /viewPlan -->
 
   <footer>
     دفتر مطالعه روزانه — اطلاعات به‌صورت خودکار در همین مرورگر ذخیره می‌شود.<br>
@@ -1062,11 +1144,189 @@ function legacyCopy(text){
   ta.remove();
 }
 
+/* ===================== برنامهٔ هفتگی ===================== */
+var PKEY = 'studyLog.plan.v1';
+var PLAN_DAYS = ['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنج‌شنبه','جمعه'];
+var plan = [[],[],[],[],[],[],[]];
+
+function loadPlan(){
+  try{
+    var raw = localStorage.getItem(PKEY);
+    if (!raw) return;
+    var p = JSON.parse(raw);
+    if (Array.isArray(p) && p.length === 7) plan = p.map(function(d){ return Array.isArray(d) ? d : []; });
+  }catch(e){}
+}
+function savePlan(){ try{ localStorage.setItem(PKEY, JSON.stringify(plan)); }catch(e){} }
+
+function t2m(t){
+  var m = /^(\d{1,2}):(\d{2})$/.exec(String(t || ''));
+  if (!m) return null;
+  var h = +m[1], mi = +m[2];
+  return (h < 24 && mi < 60) ? h * 60 + mi : null;
+}
+function slotMinutes(s){
+  var a = t2m(s.from), b = t2m(s.to);
+  return (a === null || b === null || b <= a) ? 0 : b - a;
+}
+function slotOK(s){ return slotMinutes(s) > 0; }
+function faT(t){ return t ? fa(t) : '—'; }
+
+function renderPlanEditor(){
+  var host = $('planDays');
+  host.innerHTML = PLAN_DAYS.map(function(name, d){
+    var slots = plan[d];
+    var mins = slots.reduce(function(a, s){ return a + slotMinutes(s); }, 0);
+    var meta = slots.length
+      ? fa(slots.length) + ' بازه' + (mins ? ' · ' + minutesText(mins) : '')
+      : 'بدون بازه';
+    var body = slots.length
+      ? slots.map(function(s, i){
+          var bad = (s.from || s.to) && !slotOK(s) ? ' bad' : '';
+          return '<div class="slot-row">'
+            + '<input type="time" class="s-from' + bad + '" data-d="' + d + '" data-i="' + i + '" value="' + (s.from||'') + '" aria-label="شروع">'
+            + '<input type="time" class="s-to' + bad + '" data-d="' + d + '" data-i="' + i + '" value="' + (s.to||'') + '" aria-label="پایان">'
+            + '<input type="text" class="s-label" list="subjectList" data-d="' + d + '" data-i="' + i + '" value="' + esc(s.label||'') + '" placeholder="درس / عنوان (اختیاری)">'
+            + '<button type="button" class="x-btn s-del" data-d="' + d + '" data-i="' + i + '" title="حذف بازه">×</button>'
+            + '</div>';
+        }).join('')
+      : '<p class="pd-empty">هنوز بازه‌ای برای این روز تعریف نشده است.</p>';
+    return '<div class="plan-day">'
+      + '<div class="pd-head"><span class="pd-name">' + name + '</span>'
+      + '<button type="button" class="btn ghost mini s-add" data-d="' + d + '">+ افزودن بازه</button>'
+      + '<span class="pd-meta">' + meta + '</span></div>'
+      + body + '</div>';
+  }).join('');
+}
+
+function renderPlanPreview(){
+  var total = 0, count = 0;
+  var rowsHtml = PLAN_DAYS.map(function(name, d){
+    var slots = plan[d].filter(function(s){ return s.from || s.to; })
+      .slice().sort(function(a, b){ return (t2m(a.from) || 0) - (t2m(b.from) || 0); });
+    var cell;
+    if (!slots.length){
+      cell = '<span class="no-slot">—</span>';
+    } else {
+      cell = '<div class="slots">' + slots.map(function(s){
+        var ok = slotOK(s);
+        if (ok){ total += slotMinutes(s); count++; }
+        return '<span class="slot' + (ok ? '' : ' off') + '">'
+          + '<b>' + faT(s.from) + ' – ' + faT(s.to) + '</b>'
+          + (s.label ? '<i>' + esc(s.label) + '</i>' : '')
+          + '</span>';
+      }).join('') + '</div>';
+    }
+    return '<tr><th>' + name + '</th><td>' + cell + '</td></tr>';
+  }).join('');
+
+  $('planPreview').innerHTML = '<table class="sched"><tbody>' + rowsHtml + '</tbody></table>';
+  $('planMeta').textContent = count
+    ? fa(count) + ' بازه در هفته · ' + minutesText(total)
+    : 'هنوز برنامه‌ای ساخته نشده است.';
+}
+
+function renderPlan(){ renderPlanEditor(); renderPlanPreview(); }
+
+function initPlan(){
+  var host = $('planDays');
+
+  // فهرست پیشنهادی درس‌ها را از همان منوی دفتر مطالعه می‌سازیم تا یک‌جا نگهداری شود
+  $('subjectList').innerHTML = Array.prototype.map.call(
+    $('fSubject').querySelectorAll('optgroup option'),
+    function(o){ return '<option value="' + esc(o.textContent) + '"></option>'; }
+  ).join('');
+
+  host.addEventListener('click', function(e){
+    var add = e.target.closest('.s-add'), del = e.target.closest('.s-del');
+    if (add){
+      plan[+add.dataset.d].push({ from:'', to:'', label:'' });
+      savePlan(); renderPlan();
+      var rowsEl = host.querySelectorAll('.plan-day')[+add.dataset.d].querySelectorAll('.s-from');
+      if (rowsEl.length) rowsEl[rowsEl.length - 1].focus();
+    } else if (del){
+      plan[+del.dataset.d].splice(+del.dataset.i, 1);
+      savePlan(); renderPlan();
+    }
+  });
+
+  host.addEventListener('input', function(e){
+    var t = e.target, d = t.dataset.d, i = t.dataset.i;
+    if (d === undefined || i === undefined) return;
+    var s = plan[+d][+i];
+    if (!s) return;
+    if (t.classList.contains('s-from')) s.from = t.value;
+    else if (t.classList.contains('s-to')) s.to = t.value;
+    else if (t.classList.contains('s-label')) s.label = t.value;
+    else return;
+    savePlan();
+    renderPlanPreview();
+    // فقط وضعیت خطا را به‌روز می‌کنیم تا فوکوس کاربر پرت نشود
+    var row = t.closest('.slot-row');
+    var bad = (s.from || s.to) && !slotOK(s);
+    row.querySelector('.s-from').classList.toggle('bad', !!bad);
+    row.querySelector('.s-to').classList.toggle('bad', !!bad);
+    var head = t.closest('.plan-day').querySelector('.pd-meta');
+    var mins = plan[+d].reduce(function(a, x){ return a + slotMinutes(x); }, 0);
+    head.textContent = fa(plan[+d].length) + ' بازه' + (mins ? ' · ' + minutesText(mins) : '');
+  });
+
+  $('btnPlanCopyPrev').addEventListener('click', function(){
+    for (var d = 1; d < 7; d++){
+      if (!plan[d].length && plan[d-1].length){
+        plan[d] = plan[d-1].map(function(s){ return { from:s.from, to:s.to, label:s.label }; });
+        savePlan(); renderPlan();
+        toast('برنامهٔ ' + PLAN_DAYS[d-1] + ' در ' + PLAN_DAYS[d] + ' تکرار شد.');
+        return;
+      }
+    }
+    toast('روز خالیِ بعد از یک روز پُر پیدا نشد.');
+  });
+
+  $('btnPlanClear').addEventListener('click', function(){
+    if (!plan.some(function(d){ return d.length; })){ toast('برنامه از قبل خالی است.'); return; }
+    if (!confirm('کل برنامهٔ هفتگی پاک می‌شود.\n\nادامه می‌دهی؟')) return;
+    plan = [[],[],[],[],[],[],[]];
+    savePlan(); renderPlan(); toast('برنامهٔ هفتگی پاک شد.');
+  });
+
+  $('btnPlanPdf').addEventListener('click', function(){
+    if (!plan.some(function(d){ return d.some(slotOK); })){
+      toast('اول چند بازه با ساعت درست تعریف کن.');
+      return;
+    }
+    window.print();
+  });
+}
+
+/* ===================== تب‌ها ===================== */
+function initTabs(){
+  var tabs = [
+    { btn:$('tabLog'),  view:$('viewLog') },
+    { btn:$('tabPlan'), view:$('viewPlan') }
+  ];
+  function show(idx){
+    tabs.forEach(function(t, i){
+      t.btn.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+      t.view.hidden = i !== idx;
+    });
+    try{ localStorage.setItem('studyLog.tab.v1', String(idx)); }catch(e){}
+  }
+  tabs.forEach(function(t, i){ t.btn.addEventListener('click', function(){ show(i); }); });
+  var saved = 0;
+  try{ saved = parseInt(localStorage.getItem('studyLog.tab.v1'), 10) || 0; }catch(e){}
+  show(saved === 1 ? 1 : 0);
+}
+
 /* ===================== شروع ===================== */
 load();
+loadPlan();
 $('todayVal').textContent = fullDate(toISO(new Date()));
 initForm();
 initExport();
+initPlan();
+initTabs();
+renderPlan();
 $('fRange').addEventListener('change', renderOverview);
 renderAll();
 if (!storageOk) showStorageWarning();
