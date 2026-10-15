@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>دفتر مطالعه روزانه</title>
 <link rel="preload" href="assets/fonts/Vazirmatn-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -236,7 +236,7 @@ td.act{width:1%;text-align:left}
 .bar-row{display:grid;grid-template-columns:minmax(88px,auto) 1fr minmax(96px,auto);align-items:center;gap:12px}
 .bar-row .name{font-size:.86rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bar-track{height:9px;border-radius:5px;background:var(--line-2);overflow:hidden}
-.bar-fill{height:100%;border-radius:5px;background:var(--accent);min-width:4px}
+.bar-fill{display:block;height:100%;border-radius:5px;background:var(--accent);min-width:4px}
 .bar-row .val{font-size:.82rem;font-weight:600;color:var(--ink-2);text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap}
 .bar-row .val b{color:var(--ochre)}
 
@@ -300,6 +300,7 @@ footer{text-align:center;color:var(--ink-3);font-size:.78rem;padding-top:4px;lin
 .pd-meta{font-size:.78rem;color:var(--ink-3);font-variant-numeric:tabular-nums;margin-inline-start:auto}
 .slot-row{display:grid;grid-template-columns:1fr 1fr 1.6fr auto;gap:7px;align-items:center}
 .slot-row input{padding:7px 9px;font-size:.84rem}
+.slot-field{display:flex;flex-direction:column;gap:4px;min-width:0;font-size:.75rem}
 .slot-row .bad{border-color:var(--danger)}
 .pd-empty{font-size:.8rem;color:var(--ink-3)}
 .x-btn{border:1px solid var(--line);background:var(--surface);color:var(--ink-3);cursor:pointer;
@@ -323,6 +324,97 @@ table.sched td{border:1px solid var(--line);padding:8px;vertical-align:middle}
   .slot-row{grid-template-columns:1fr 1fr auto}
   .slot-row .s-label{grid-column:1/-1}
   table.sched th{width:64px;padding:7px;font-size:.8rem}
+}
+
+/* ---------- phones: readable controls, touch targets and session cards ---------- */
+@media screen and (max-width:600px){
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  .app{
+    padding:12px max(12px,env(safe-area-inset-right)) max(28px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
+    gap:14px;
+  }
+  .app > *,[role=tabpanel] > *, .brand > div{min-width:0}
+  [role=tabpanel]:not([hidden]){display:flex;flex-direction:column;gap:14px}
+  .masthead{padding:16px;gap:12px}
+  .brand{gap:10px;min-width:0;align-items:flex-start}
+  .mark{width:38px;height:38px;border-radius:9px}
+  .masthead h1{font-size:1.16rem;line-height:1.6}
+  .masthead .sub{font-size:.8rem;line-height:1.8}
+  .today-chip{width:100%;flex-direction:row;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px}
+  .today-chip .val{font-size:.85rem;text-align:end;overflow-wrap:anywhere}
+  .tabs{position:sticky;top:max(8px,env(safe-area-inset-top));z-index:20;gap:4px;padding:4px}
+  .tab{min-width:0;min-height:48px;padding:8px 6px;font-size:.88rem}
+  .card{padding:16px 14px;gap:14px}
+  .card > h2,.head-row h2{font-size:.85rem;color:var(--ink-2)}
+  .head-row{align-items:center;gap:8px}
+  .head-row > *{min-width:0}
+  label,.field > .cap{font-size:.84rem}
+  .form-grid{gap:16px}
+  input,select,textarea,.slot-row input{
+    min-width:0;max-width:100%;min-height:48px;font-size:16px;line-height:1.6;padding:10px;
+  }
+  input[type=date],input[type=time]{display:block;min-inline-size:0}
+  input[type=date]::-webkit-date-and-time-value,input[type=time]::-webkit-date-and-time-value{text-align:start;min-height:1.6em}
+  textarea{resize:vertical;min-height:140px}
+  .derived{font-size:.82rem;padding:9px 10px;overflow-wrap:anywhere}
+  .chips{gap:6px}
+  .f-date .chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .f-min .chips{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+  .chip{min-width:0;min-height:44px;padding:6px 4px;font-size:.84rem}
+  .f-submit > .cap{display:none}
+  .btn{min-height:48px;max-width:100%;padding:10px 12px;white-space:normal;line-height:1.7}
+  .btn-row{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+  .btn-row .btn{width:100%}
+  button{touch-action:manipulation}
+  .icon-btn{min-width:60px;min-height:44px;padding:8px 12px}
+  .tiles{gap:8px;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tile{min-width:0;padding:12px 10px;gap:3px}
+  .tile .k,.tile .u{font-size:.76rem;color:var(--ink-2);overflow-wrap:anywhere}
+  .tile .v{font-size:1.45rem;overflow-wrap:anywhere}
+  .range-row{width:100%;min-width:0}
+  .range-row select{min-width:0;width:100%}
+  .session-table,.session-table tbody{display:block;width:100%}
+  .session-table thead{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .session-table tbody{display:grid;gap:10px}
+  .session-table tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2)}
+  .session-table td{display:block;min-width:0;border:0;padding:0;text-align:start;overflow-wrap:anywhere;white-space:normal}
+  .session-table td[data-label]::before{content:attr(data-label);display:block;font-size:.73rem;font-weight:500;color:var(--ink-2);margin-bottom:2px}
+  .session-table td.subj{grid-column:1/-1;font-size:.95rem}
+  .session-table td.note{grid-column:1/-1;font-size:.84rem}
+  .session-table td.act{grid-column:1/-1;width:auto;display:flex;justify-content:flex-end;border-top:1px solid var(--line);padding-top:6px}
+  .session-table .dot{width:6px;height:6px}
+  .day-group summary{padding:12px;gap:4px;min-height:48px}
+  .day-group .d-meta{width:100%;font-size:.78rem;overflow-wrap:anywhere}
+  .day-group .d-body{padding:10px}
+  .bar-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:5px 10px;padding-block:4px}
+  .bar-row .name{white-space:normal;overflow-wrap:anywhere}
+  .bar-row .val{white-space:normal;overflow-wrap:anywhere;font-size:.78rem}
+  .bar-track{grid-column:1/-1;grid-row:2}
+  .panel{min-width:0;padding:14px 12px}
+  .panel p,.hint{font-size:.8rem;color:var(--ink-2);overflow-wrap:anywhere}
+  .plan-day{padding:12px 10px}
+  .pd-head{gap:8px}
+  .pd-name{min-width:0;margin-inline-end:auto}
+  .pd-meta{width:100%;margin-inline-start:0;font-size:.78rem}
+  .mini{min-height:44px;padding:6px 10px}
+  .slot-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px;gap:8px;align-items:end;padding:10px;border:1px solid var(--line);border-radius:9px;background:var(--surface)}
+  .slot-row .s-label{grid-column:1/-1;grid-row:2}
+  .slot-row .s-del{grid-column:3;grid-row:1}
+  .x-btn{width:44px;height:48px;font-size:1.25rem}
+  table.sched th{width:62px;padding:8px 5px;white-space:normal}
+  table.sched td{padding:8px;min-width:0;overflow-wrap:anywhere}
+  .slots{gap:6px}
+  .slot{width:100%;min-width:0;padding:8px}
+  .slot b{font-size:.84rem;letter-spacing:normal;direction:ltr;text-align:right}
+  .slot i{font-size:.8rem;overflow-wrap:anywhere}
+  #toast{inset-inline:12px;inset-block-end:max(12px,env(safe-area-inset-bottom));max-width:none;padding:12px 14px;font-size:.85rem;overflow-wrap:anywhere}
+  footer{font-size:.75rem;padding:0 8px;overflow-wrap:anywhere}
+}
+@media screen and (max-width:380px){
+  .slot-row{grid-template-columns:minmax(0,1fr) 44px}
+  .slot-row .slot-field{grid-column:1/-1}
+  .slot-row .s-label{grid-column:1;grid-row:3}
+  .slot-row .s-del{grid-column:2;grid-row:3}
 }
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -840,18 +932,18 @@ function initForm(){
 /* ===================== رندر ===================== */
 function rowTable(list, showDate){
   if (!list.length) return '<div class="empty">هنوز چیزی ثبت نشده است.</div>';
-  var h = '<div class="table-wrap"><table><thead><tr>'
-        + (showDate ? '<th>تاریخ</th>' : '')
-        + '<th>درس</th><th>مدت</th><th>تست</th><th>یادداشت</th><th class="no-print"></th>'
-        + '</tr></thead><tbody>';
+  var h = '<div class="table-wrap"><table class="session-table" role="table"><thead role="rowgroup"><tr role="row">'
+        + (showDate ? '<th scope="col" role="columnheader">تاریخ</th>' : '')
+        + '<th scope="col" role="columnheader">درس</th><th scope="col" role="columnheader">مدت</th><th scope="col" role="columnheader">تست</th><th scope="col" role="columnheader">یادداشت</th><th scope="col" role="columnheader" class="no-print">عملیات</th>'
+        + '</tr></thead><tbody role="rowgroup">';
   list.forEach(function(r){
-    h += '<tr>'
-       + (showDate ? '<td class="num">' + jalaliShort(r.date) + '</td>' : '')
-       + '<td class="subj"><span class="dot"></span>' + esc(r.subject) + '</td>'
-       + '<td class="num">' + minutesText(r.minutes) + '</td>'
-       + '<td class="num">' + fa(r.questions) + '</td>'
-       + '<td class="note">' + (r.note ? esc(r.note) : '—') + '</td>'
-       + '<td class="act no-print"><button class="icon-btn" data-del="' + r.id + '" title="حذف">حذف</button></td>'
+    h += '<tr role="row">'
+       + (showDate ? '<td role="cell" class="num" data-label="تاریخ">' + jalaliShort(r.date) + '</td>' : '')
+       + '<td role="cell" class="subj"><span class="dot" aria-hidden="true"></span>' + esc(r.subject) + '</td>'
+       + '<td role="cell" class="num" data-label="مدت مطالعه">' + minutesText(r.minutes) + '</td>'
+       + '<td role="cell" class="num" data-label="تست / سؤال">' + fa(r.questions) + '</td>'
+       + '<td role="cell" class="note" data-label="یادداشت">' + (r.note ? esc(r.note) : '—') + '</td>'
+       + '<td role="cell" class="act no-print"><button class="icon-btn" data-del="' + r.id + '" aria-label="حذف جلسهٔ ' + esc(r.subject) + '" title="حذف">حذف</button></td>'
        + '</tr>';
   });
   return h + '</tbody></table></div>';
@@ -1194,10 +1286,10 @@ function renderPlanEditor(){
       ? slots.map(function(s, i){
           var bad = (s.from || s.to) && !slotOK(s) ? ' bad' : '';
           return '<div class="slot-row">'
-            + '<input type="time" class="s-from' + bad + '" data-d="' + d + '" data-i="' + i + '" value="' + (s.from||'') + '" aria-label="شروع">'
-            + '<input type="time" class="s-to' + bad + '" data-d="' + d + '" data-i="' + i + '" value="' + (s.to||'') + '" aria-label="پایان">'
-            + '<input type="text" class="s-label" list="subjectList" data-d="' + d + '" data-i="' + i + '" value="' + esc(s.label||'') + '" placeholder="درس / عنوان (اختیاری)">'
-            + '<button type="button" class="x-btn s-del" data-d="' + d + '" data-i="' + i + '" title="حذف بازه">×</button>'
+            + '<label class="slot-field">شروع<input type="time" class="s-from' + bad + '" data-d="' + d + '" data-i="' + i + '" value="' + (s.from||'') + '" aria-label="شروع"></label>'
+            + '<label class="slot-field">پایان<input type="time" class="s-to' + bad + '" data-d="' + d + '" data-i="' + i + '" value="' + (s.to||'') + '" aria-label="پایان"></label>'
+            + '<input type="text" class="s-label" list="subjectList" data-d="' + d + '" data-i="' + i + '" value="' + esc(s.label||'') + '" aria-label="درس یا عنوان بازه" placeholder="درس / عنوان (اختیاری)">'
+            + '<button type="button" class="x-btn s-del" data-d="' + d + '" data-i="' + i + '" aria-label="حذف بازهٔ ' + name + '" title="حذف بازه">×</button>'
             + '</div>';
         }).join('')
       : '<p class="pd-empty">هنوز بازه‌ای برای این روز تعریف نشده است.</p>';
