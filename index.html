@@ -4,7 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>دفتر مطالعه روزانه</title>
+<link rel="preload" href="assets/fonts/Vazirmatn-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+/* ---------- bundled Persian font: Vazirmatn v33.003 (SIL OFL 1.1) ---------- */
+@font-face{
+  font-family:'Vazirmatn';
+  src:url('assets/fonts/Vazirmatn-Variable.woff2') format('woff2');
+  font-style:normal;
+  font-weight:100 900;
+  font-display:swap;
+}
+
 /* ---------- tokens ---------- */
 :root{
   --paper:#EDF1F5;
@@ -76,7 +86,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
-  font-family:'Vazirmatn','Vazir','IRANSansX','IRANSans','Shabnam','Sahel','Segoe UI',Tahoma,sans-serif;
+  font-family:'Vazirmatn',Tahoma,'Segoe UI',sans-serif;
   color:var(--ink);
   background-color:var(--paper);
   background-image:
@@ -102,13 +112,13 @@ body{
   width:44px;height:44px;flex:none;border-radius:10px;background:var(--accent-soft);
   display:grid;place-items:center;color:var(--accent);
 }
-.masthead h1{margin:0;font-size:1.32rem;font-weight:800;letter-spacing:-.015em;text-wrap:balance}
+.masthead h1{margin:0;font-size:1.32rem;font-weight:800;text-wrap:balance}
 .masthead .sub{margin:2px 0 0;color:var(--ink-2);font-size:.86rem}
 .today-chip{
   display:flex;flex-direction:column;gap:1px;text-align:left;
   padding:8px 14px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line-2);
 }
-.today-chip .lbl{font-size:.68rem;letter-spacing:.09em;color:var(--ink-3);text-transform:uppercase}
+.today-chip .lbl{font-size:.68rem;color:var(--ink-3);text-transform:uppercase}
 .today-chip .val{font-size:.95rem;font-weight:700;font-variant-numeric:tabular-nums}
 
 /* ---------- cards ---------- */
@@ -118,11 +128,11 @@ body{
   display:flex;flex-direction:column;gap:16px;
 }
 .card > h2{
-  margin:0;font-size:.74rem;font-weight:700;letter-spacing:.13em;
+  margin:0;font-size:.74rem;font-weight:700;
   color:var(--ink-3);text-transform:uppercase;
 }
 .head-row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px}
-.head-row h2{margin:0;font-size:.74rem;font-weight:700;letter-spacing:.13em;color:var(--ink-3);text-transform:uppercase}
+.head-row h2{margin:0;font-size:.74rem;font-weight:700;color:var(--ink-3);text-transform:uppercase}
 
 /* ---------- form ---------- */
 .form-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
@@ -193,7 +203,7 @@ select{cursor:pointer}
   padding:13px 15px;border-radius:10px;background:var(--surface-2);
   border:1px solid var(--line-2);display:flex;flex-direction:column;gap:1px;
 }
-.tile .k{font-size:.72rem;font-weight:600;color:var(--ink-3);letter-spacing:.04em}
+.tile .k{font-size:.72rem;font-weight:600;color:var(--ink-3)}
 .tile .v{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.3}
 .tile .u{font-size:.75rem;font-weight:600;color:var(--ink-3)}
 .tile.time{border-inline-start:3px solid var(--accent)}
@@ -205,7 +215,7 @@ select{cursor:pointer}
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.9rem}
 th{
-  text-align:right;font-size:.7rem;font-weight:700;letter-spacing:.09em;
+  text-align:right;font-size:.7rem;font-weight:700;
   color:var(--ink-3);text-transform:uppercase;padding:0 10px 8px;
   border-bottom:1px solid var(--line);white-space:nowrap;
 }
@@ -271,7 +281,7 @@ td.act{width:1%;text-align:left}
 .warn strong{color:var(--ochre)}
 
 footer{text-align:center;color:var(--ink-3);font-size:.78rem;padding-top:4px;line-height:1.9}
-.credit{display:inline-block;margin-top:2px;color:var(--ink-2);font-weight:600;letter-spacing:.2px}
+.credit{display:inline-block;margin-top:2px;color:var(--ink-2);font-weight:600}
 
 /* ---------- تب‌ها ---------- */
 .tabs{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);
@@ -293,7 +303,7 @@ footer{text-align:center;color:var(--ink-3);font-size:.78rem;padding-top:4px;lin
 .slot-row .bad{border-color:var(--danger)}
 .pd-empty{font-size:.8rem;color:var(--ink-3)}
 .x-btn{border:1px solid var(--line);background:var(--surface);color:var(--ink-3);cursor:pointer;
-  border-radius:8px;width:30px;height:30px;font-size:1rem;line-height:1;transition:.14s}
+  border-radius:8px;width:30px;height:30px;font-family:inherit;font-size:1rem;line-height:1;transition:.14s}
 .x-btn:hover{color:var(--danger);border-color:var(--danger)}
 .mini{padding:5px 10px;font-size:.78rem;border-radius:7px}
 
